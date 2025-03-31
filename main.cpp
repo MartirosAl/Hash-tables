@@ -13,14 +13,14 @@ int main()
    A.insert(2);
    A.insert(3);
    A.insert(4);
-   //A.Print();
    A.insert(5);
    A.insert(10);
    A.insert(15);
    A.insert(16);
    A.insert(17);
    A.insert(20);
-   A.remove(20);
+   //A.Print();
+   A.remove(0);
    A.Print();
    return 0;
 }

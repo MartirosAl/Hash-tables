@@ -151,40 +151,53 @@ class Hash_table_internal
          {
             int prev = transp;
 
-            while (table[transp].alt != 0)
+            while (table[table[transp].alt].alt != 0)
             {
                transp = table[transp].alt;
             }
 
-            ////!!!!!!!!!!!!!!!!!!!!!!!
-            if (table[0].alt != 0)
-               table[table[prev].alt].alt = table[0].alt;
+            table[prev].value = table[table[transp].alt].value;
 
-            table[transp].value = -1;
-            table[prev].alt = 0;
+            table[0].alt = table[transp].alt;
+
+            table[table[transp].alt].value = -1;
+
+            table[transp].alt = 0;
          }
       }
       else
       {
-         int prev = transp;
 
-         while (table[table[prev].alt].value != a)
+         while (table[table[transp].alt].value != a)
          {
-            prev = table[prev].alt;
+            transp = table[transp].alt;
          }
 
-         ///////Говно
-         table[prev].alt = table[table[prev].alt].alt;
+         table[table[transp].alt].alt = table[0].alt;
 
-         table[table[prev].alt].alt = table[0].alt;
+         table[0].alt = table[transp].alt;
 
-         table[0].alt = table[prev].alt;
+         table[table[transp].alt].value = -1;
 
-         table[table[prev].alt].value = -1;
+         table[transp].alt = table[table[transp].alt].alt;
+
       }
       return;
    }
 
+   int Alt_find(int a)
+   {
+       size_t transp = function(a) + 1;
+
+       while (table[transp].alt != 0)
+       {
+           transp = table[transp].alt;
+           if (table[transp].value != a)
+               return transp;
+       }
+
+       return -1;
+   }
 
 public:
 
@@ -240,6 +253,18 @@ public:
       }
       
       return;
+   }
+
+   int find(int a)
+   {
+       if (table[function(a) + 1].value == a)
+       {
+           return function(a) + 1;
+       }
+       else
+       {
+           return Alt_find(a);
+       }
    }
 
    void Print()
