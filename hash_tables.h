@@ -103,7 +103,7 @@ class Hash_table_internal
       table = new_table; 
    }
 
-   void Conflict_resolution(int a)
+   int Conflict_resolution(int a, int ind)
    {
       if (next_in_alt_table == size_table)
       {
@@ -121,7 +121,8 @@ class Hash_table_internal
       {
          table[transp].alt = next_in_alt_table;
          table[next_in_alt_table].value = a;
-         next_in_alt_table++;
+         table[next_in_alt_table].index = ind;
+         return next_in_alt_table++;
       }
       else
       {
@@ -132,9 +133,10 @@ class Hash_table_internal
 
          table[transp].alt = alt_zero;
          table[alt_zero].value = a;
+         table[alt_zero].index = ind;
 
       }
-      return;
+      return transp;
    }
 
    void Correct_removal(int a)
@@ -161,6 +163,7 @@ class Hash_table_internal
             table[0].alt = table[transp].alt;
 
             table[table[transp].alt].value = -1;
+            table[table[transp].alt].index = -1;
 
             table[transp].alt = 0;
          }
@@ -178,6 +181,7 @@ class Hash_table_internal
          table[0].alt = table[transp].alt;
 
          table[table[transp].alt].value = -1;
+         table[table[transp].alt].index = -1;
 
          table[transp].alt = table[table[transp].alt].alt;
 
@@ -229,21 +233,26 @@ public:
       Create_table();
    }
 
-   void insert(int a)
+   int insert(int a, int ind)
    {
+      if (find(a))
+          return;
       if (table[function(a) + 1].value == -1)
       {
          table[function(a) + 1].value = a;
+         table[function(a) + 1].index = ind;
+         return (function(a) + 1);
       }
       else
       {
-         Conflict_resolution(a);
+         return Conflict_resolution(a, ind);
       }
+
    }
 
    void remove(int a)
    {
-      if (table[function(a) + 1].value == -1)
+      if (!find(a))
       {
          ;
       }
