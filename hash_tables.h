@@ -10,8 +10,6 @@ int standart(int a)
    return a % 269;
 }
 
-
-
 // Функция для определения ближайшего простого числа, не меньшего заданного
 bool isPrime(size_t n) {
    if (n < 2) return false;
@@ -196,11 +194,11 @@ class Hash_table_internal
        while (table[transp].alt != 0)
        {
            transp = table[transp].alt;
-           if (table[transp].value != a)
+           if (table[transp].value == a)
                return transp;
        }
 
-       return -1;
+       return 0;
    }
 
 public:
@@ -233,10 +231,10 @@ public:
       Create_table();
    }
 
-   int insert(int a, int ind)
+   int insert(int a, int ind = -1)
    {
       if (find(a))
-          return;
+          return find(a);
       if (table[function(a) + 1].value == -1)
       {
          table[function(a) + 1].value = a;
@@ -260,8 +258,7 @@ public:
       {
          Correct_removal(a);
       }
-      
-      return;
+    
    }
 
    int find(int a)
