@@ -174,14 +174,16 @@ class Hash_table_internal
             transp = table[transp].alt;
          }
 
+         int temp = table[table[transp].alt].alt;
+
          table[table[transp].alt].alt = table[0].alt;
-
-         table[0].alt = table[transp].alt;
-
+         
          table[table[transp].alt].value = -1;
          table[table[transp].alt].index = -1;
+         
+         table[0].alt = table[transp].alt;
 
-         table[transp].alt = table[table[transp].alt].alt;
+         table[transp].alt = temp;
 
       }
       return;
