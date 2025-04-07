@@ -158,11 +158,11 @@ class Hash_table_internal
 
             table[prev].value = table[table[transp].alt].value;
 
+            table[table[transp].alt].alt = table[0].alt;
             table[0].alt = table[transp].alt;
 
             table[table[transp].alt].value = -1;
             table[table[transp].alt].index = -1;
-
             table[transp].alt = 0;
          }
       }
@@ -275,16 +275,31 @@ public:
        }
    }
 
+   //true - если нашел
+   bool error_finder()
+   {
+      for (int i = 1; i < size_table; i++)
+      {
+         if (table[i].value != -1 && table[i].index == -1)
+            return true;
+      }
+      return false;
+   }
+
    void Print()
    {
       for (int i = 0; i < size_main_area; i++)
       {
+         if (table[i].value == -1 && table[i].alt == 0)
+            continue;
          cout << "--------------------------------" << endl;
          cout << i << "\t | " << table[i].value << "\t | " << table[i].alt << endl;
       }
       cout << "===================================" << endl;
       for (int i = size_main_area; i < size_table; i++)
       {
+         if (table[i].value == -1 && table[i].alt == 0)
+            continue;
          cout << i << "\t | " << table[i].value << "\t | " << table[i].alt << endl;
          cout << "--------------------------------" << endl;
       }
